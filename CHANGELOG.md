@@ -197,7 +197,7 @@
     added instructions for enabling masternode (conf edits) after install
 
     bugfix - better boolean test for reinstall mode
-    bugfix - die if cannot determine latest-version from/retrieve kyanpay downloads page
+    bugfix - die if cannot determine latest-version from/retrieve dashpay downloads page
     bugfix - five second connect timeout for public port test
 
 0.1.7 - Mon Sep 14 02:59:05 2015 +0000

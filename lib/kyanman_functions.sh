@@ -25,7 +25,7 @@ if [ -t 1 ] || [ ! -z "$FORCE_COLOR" ] ; then
 fi
 
 
-GITHUB_API_KYAN="https://api.github.com/repos/kyanpay/kyan"
+GITHUB_API_KYAN="https://api.github.com/repos/sapphire-pt/KYAN"
 
 KYAND_RUNNING=0
 KYAND_RESPONDING=0
@@ -506,7 +506,7 @@ update_kyand(){
 
         pending " --> ${messages["downloading"]} ${DOWNLOAD_URL}... "
         wget --no-check-certificate -q -r $DOWNLOAD_URL -O $DOWNLOAD_FILE
-        wget --no-check-certificate -q -r https://github.com/kyanpay/kyan/releases/download/v$LATEST_VERSION/SHA256SUMS.asc -O ${DOWNLOAD_FILE}.DIGESTS.txt
+        wget --no-check-certificate -q -r https://github.com/sapphire-pt/KYAN/releases/download/v$LATEST_VERSION/SHA256SUMS.asc -O ${DOWNLOAD_FILE}.DIGESTS.txt
         if [ ! -e $DOWNLOAD_FILE ] ; then
             echo -e "${C_RED}${messages["err_downloading_file"]}"
             echo -e "${messages["err_tried_to_get"]} $DOWNLOAD_URL$C_NORM"
@@ -732,7 +732,7 @@ install_kyand(){
     tput sc
     echo -e "$C_CYAN"
     $wget_cmd -O - $DOWNLOAD_URL | pv -trep -s28787607 -w80 -N wallet > $DOWNLOAD_FILE
-    $wget_cmd -O - https://github.com/kyanpay/kyan/releases/download/v$LATEST_VERSION/SHA256SUMS.asc | pv -trep -w80 -N checksums > ${DOWNLOAD_FILE}.DIGESTS.txt
+    $wget_cmd -O - https://github.com/sapphire-pt/KYAN/releases/download/v$LATEST_VERSION/SHA256SUMS.asc | pv -trep -w80 -N checksums > ${DOWNLOAD_FILE}.DIGESTS.txt
     echo -ne "$C_NORM"
     clear_n_lines 2
     tput rc
@@ -1339,7 +1339,7 @@ install_sentinel() {
 
     pending "  --> ${messages["downloading"]} sentinel... "
 
-    git clone -q https://github.com/kyanpay/sentinel.git
+    git clone -q https://github.com/bedri/kyan-sentinel.git
 
     ok "${messages["done"]}"
 

@@ -2,7 +2,8 @@
 rpcuser=$RPCUSER
 rpcpassword=$RPCPASS
 rpcallowip=127.0.0.1
-rpcport=9998
+"#testnet-rpc-port"
+rpcport=17584
 "#----"
 listen=1
 server=1

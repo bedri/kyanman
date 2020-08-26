@@ -1,14 +1,16 @@
 #!/bin/bash
 
+die() { echo "$*" 1>&2 ; exit 1; }
+
 # kyanman - main executable
 # installs, updates, and manages kyan daemons and wallets
 
 # Copyright (c) 2015-2019 moocowmoo - moocowmoo@masternode.me
 
-# check we're running bash 4 -------------------------------------------------
+# check we're running bash v4 or v5 -------------------------------------------------
 
-if [[ ${BASH_VERSION%%.*} != '4' ]];then
-    die "kyanman requires bash version 4. please update. exiting."
+if [[ "${BASH_VERSION%%.*}" != '4' && "${BASH_VERSION%%.*}" != '5' ]];then
+	die "kyanman requires bash version 4. please update. exiting."
 fi
 
 # parse any command line switches --------------------------------------------
@@ -231,5 +233,6 @@ case "$1" in
             usage
             ;;
 esac
+
 
 quit
