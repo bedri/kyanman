@@ -1,14 +1,14 @@
 #!/bin/bash
 
-# dashman - main executable
-# installs, updates, and manages dash daemons and wallets
+# kyanman - main executable
+# installs, updates, and manages kyan daemons and wallets
 
 # Copyright (c) 2015-2019 moocowmoo - moocowmoo@masternode.me
 
 # check we're running bash 4 -------------------------------------------------
 
 if [[ ${BASH_VERSION%%.*} != '4' ]];then
-    die "dashman requires bash version 4. please update. exiting."
+    die "kyanman requires bash version 4. please update. exiting."
 fi
 
 # parse any command line switches --------------------------------------------
@@ -36,25 +36,25 @@ shift $(($OPTIND - 1))
 
 # load common functions ------------------------------------------------------
 
-DASHMAN_BIN=$(readlink -f $0)
-DASHMAN_GITDIR=$(readlink -f ${DASHMAN_BIN%%/bin/${DASHMAN_BIN##*/}})
-source $DASHMAN_GITDIR/lib/dashman_functions.sh
+KYANMAN_BIN=$(readlink -f $0)
+KYANMAN_GITDIR=$(readlink -f ${KYANMAN_BIN%%/bin/${KYANMAN_BIN##*/}})
+source $KYANMAN_GITDIR/lib/kyanman_functions.sh
 
 # load language packs --------------------------------------------------------
 
 declare -A messages
 
 # set all default strings
-source $DASHMAN_GITDIR/lang/en_US.sh
+source $KYANMAN_GITDIR/lang/en_US.sh
 
 # override if configured
 lang_type=${LANG%%\.*}
-[[ -e $DASHMAN_GITDIR/lang/$lang_type.sh ]] && source $DASHMAN_GITDIR/lang/$lang_type.sh
+[[ -e $KYANMAN_GITDIR/lang/$lang_type.sh ]] && source $KYANMAN_GITDIR/lang/$lang_type.sh
 
 # process switch overrides ---------------------------------------------------
 
 # show version and exit if requested
-[[ $VERSION || $1 == 'version' ]] && echo $DASHMAN_VERSION && exit 0
+[[ $VERSION || $1 == 'version' ]] && echo $KYANMAN_VERSION && exit 0
 
 # show help and exit if requested or no command supplied - TODO make command specific
 [[ $HELP || -z $1 ]] && usage && exit 0
@@ -64,35 +64,35 @@ _check_dependencies $@
 
 # have command, will travel... -----------------------------------------------
 
-echo -e "${C_CYAN}${messages["dashman_version"]} $DASHMAN_VERSION$DASHMAN_CHECKOUT${C_NORM} - ${C_GREEN}$(date)${C_NORM}"
+echo -e "${C_CYAN}${messages["kyanman_version"]} $KYANMAN_VERSION$KYANMAN_CHECKOUT${C_NORM} - ${C_GREEN}$(date)${C_NORM}"
 
 # do awesome stuff -----------------------------------------------------------
 COMMAND=''
 case "$1" in
         restart)
             COMMAND=$1
-            _find_dash_directory
-            _check_dashd_state
-            # TODO, show uptime: ps --no-header -o pid,etime $(cat $INSTALL_DIR/dash.pid) | awk '{print $2}'
+            _find_kyan_directory
+            _check_kyand_state
+            # TODO, show uptime: ps --no-header -o pid,etime $(cat $INSTALL_DIR/kyan.pid) | awk '{print $2}'
             case "$2" in
                 now)
-                    restart_dashd
+                    restart_kyand
                     ;;
                 *)
                     echo
-                    pending "restart dashd? "
+                    pending "restart kyand? "
                     confirm "[${C_GREEN}y${C_NORM}/${C_RED}N${C_NORM}] $C_CYAN" && \
-                        restart_dashd
+                        restart_kyand
                     ;;
             esac
             ;;
         update)
             COMMAND=$1
             pending "${messages["gathering_info"]}"
-            _check_dashman_updates
-            _find_dash_directory
+            _check_kyanman_updates
+            _find_kyan_directory
             _get_versions
-            _check_dashd_state
+            _check_kyand_state
             ok " ${messages["done"]}"
             if [ ! -z "$2" ]; then
                 if [ "$2" == '-y' ] || [ "$2" == '-Y' ]; then
@@ -103,12 +103,12 @@ case "$1" in
             if [ ! -z "$ARM" ] && [ $BIGARM -eq 0 ]; then
                 die "$COMMAND not supported yet on this platform."
             fi
-            update_dashd
+            update_kyand
             ;;
         install)
             COMMAND=$1
             pending "${messages["gathering_info"]}"
-            _check_dashman_updates
+            _check_kyanman_updates
             _get_versions
             ok " ${messages["done"]}"
             if [ ! -z "$ARM" ] && [ $BIGARM -eq 0 ]; then
@@ -117,20 +117,20 @@ case "$1" in
             if [ ! -z "$2" ]; then
                 APP=$2;
                 if [ "$APP" == 'sentinel' ]; then
-                    _find_dash_directory
+                    _find_kyan_directory
                     install_sentinel
                 elif [ "$APP" == 'unattended' ]; then
                     UNATTENDED=1
-                    install_dashd
+                    install_kyand
                 else
                     echo "don't know how to install: $2"
                 fi
                 # check command matches:
                 # monit
-                # dashman
+                # kyanman
                 # ???
             else
-                install_dashd
+                install_kyand
                 show_message_configure
             fi
             quit
@@ -138,57 +138,57 @@ case "$1" in
         reinstall)
             COMMAND=$1
             pending "${messages["gathering_info"]}"
-            _check_dashman_updates
-            _find_dash_directory
+            _check_kyanman_updates
+            _find_kyan_directory
             _get_versions
-            _check_dashd_state
+            _check_kyand_state
             REINSTALL=1
             ok " ${messages["done"]}"
             if [ ! -z "$ARM" ] && [ $BIGARM -eq 0 ]; then
                 die "$COMMAND not supported yet on this platform."
             fi
-            update_dashd
+            update_kyand
             ;;
         sync)
             COMMAND=$1
-            cd $DASHMAN_GITDIR
+            cd $KYANMAN_GITDIR
             git fetch --prune origin +refs/tags/*:refs/tags/*
             git remote update -p
             if [ -z $(git config user.email) ] ; then
-                git config user.email "dashmanuser"
-                git config user.name "dashmanuser"
+                git config user.email "kyanmanuser"
+                git config user.name "kyanmanuser"
             fi
             git stash
             git checkout master
             git reset --hard origin/master
 
-            if [ -e $DASHMAN_GITDIR/PREVIOUS_VERSION ]; then
+            if [ -e $KYANMAN_GITDIR/PREVIOUS_VERSION ]; then
                 echo '--------------'
-                cat_until "^$( cat $DASHMAN_GITDIR/PREVIOUS_VERSION ) " $DASHMAN_GITDIR/CHANGELOG.md | sed \
+                cat_until "^$( cat $KYANMAN_GITDIR/PREVIOUS_VERSION ) " $KYANMAN_GITDIR/CHANGELOG.md | sed \
                     -e "/^0\./s/^/$(echo -e $C_YELLOW)/"    -e "/^0\./s/$/$(echo -e $C_NORM)/" \
                     -e "/enh - /s/^/$(echo -e $C_GREEN)/"   -e "/enh - /s/$/$(echo -e $C_NORM)/" \
                     -e "/compat - /s/^/$(echo -e $C_YELLOW)/" -e "/compat - /s/$/$(echo -e $C_YELLOW)/" \
                     -e "/config - /s/^/$(echo -e $C_CYAN)/" -e "/config - /s/$/$(echo -e $C_NORM)/" \
                     -e "/bugfix - /s/^/$(echo -e $C_RED)/"  -e "/bugfix - /s/$/$(echo -e $C_NORM)/"
                 echo '--------------'
-                rm $DASHMAN_GITDIR/PREVIOUS_VERSION
+                rm $KYANMAN_GITDIR/PREVIOUS_VERSION
             fi
 
             if [ ! -z "$2" ]; then
                 self=${0##*/};
                 shift;
-                exec $DASHMAN_GITDIR/$self $@
+                exec $KYANMAN_GITDIR/$self $@
             fi
             quit "${messages["quit_uptodate"]}"
             ;;
         branch)
             COMMAND=$1
-            cd $DASHMAN_GITDIR
+            cd $KYANMAN_GITDIR
             git fetch --prune origin +refs/tags/*:refs/tags/*
             git remote update -p
             if [ -z $(git config user.email) ] ; then
-                git config user.email "dashmanuser"
-                git config user.name "dashmanuser"
+                git config user.email "kyanmanuser"
+                git config user.name "kyanmanuser"
             fi
             BRANCH_OK=$(git for-each-ref --format='%(refname)' refs/remotes/origin | sed -e 's|refs/remotes/origin/||g' | grep "^${2}\$" | wc -l)
             if [ $BRANCH_OK -gt 0 ];then
@@ -203,24 +203,24 @@ case "$1" in
         vote)
             COMMAND=$1
             pending "${messages["gathering_info"]}"
-            _check_dashman_updates
-            _find_dash_directory
+            _check_kyanman_updates
+            _find_kyan_directory
             _get_versions
-            _check_dashd_state
+            _check_kyand_state
             ok " ${messages["done"]}"
             echo
-            export DASH_CLI DASHMAN_PID=$$
-            /usr/bin/env python $DASHMAN_GITDIR/bin/dashvote.py
+            export KYAN_CLI KYANMAN_PID=$$
+            /usr/bin/env python $KYANMAN_GITDIR/bin/kyanvote.py
             quit 'Exiting.'
             ;;
         status)
             COMMAND=$1
             pending "${messages["gathering_info"]}"
-            _check_dashman_updates
-            _find_dash_directory
+            _check_kyanman_updates
+            _find_kyan_directory
             _get_versions
-            _check_dashd_state
-            get_dashd_status
+            _check_kyand_state
+            get_kyand_status
             get_host_status
             ok " ${messages["done"]}"
             echo
