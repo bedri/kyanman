@@ -995,7 +995,7 @@ get_kyand_status(){
 
     WEB_ME=$(echo $WEB_ME | sed -s "s/no forks detected/${messages["no_forks_detected"]}/")
 
-    CHECK_SYNC_AGAINST_HEIGHT=$(echo "$WEB_BLOCK_COUNT_CHAINZ $WEB_BLOCK_COUNT_ME $WEB_BLOCK_COUNT_DQA $WEB_BLOCK_COUNT_DWHALE" | tr " " "\n" | sort -rn | head -1)
+    CHECK_SYNC_AGAINST_HEIGHT=$(echo "$WEB_BLOCK_COUNT_DQA" | tr " " "\n" | sort -rn | head -1)
 
     KYAND_SYNCED=0
     if [ $CHECK_SYNC_AGAINST_HEIGHT -ge $KYAND_CURRENT_BLOCK ] && [ $(($CHECK_SYNC_AGAINST_HEIGHT - 5)) -lt $KYAND_CURRENT_BLOCK ];then
