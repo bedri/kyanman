@@ -532,8 +532,12 @@ update_kyand(){
         # produce it -------------------------------------------------------------
 
         pending " --> ${messages["unpacking"]} ${DOWNLOAD_FILE}... " && \
+	mkdir tmp
+	mv $DOWNLOAD_FILE tmp/
+	cd tmp
         unzip $DOWNLOAD_FILE && \
         ok "${messages["done"]}"
+	cd ..
 
         # pummel it --------------------------------------------------------------
 
@@ -560,21 +564,21 @@ update_kyand(){
             netfulfilled.dat \
             peers.dat \
             sporks.dat \
-            #kyand \
+            kyand \
             kyand-$CURRENT_VERSION \
-            #kyan-qt \
+            kyan-qt \
             kyan-qt-$CURRENT_VERSION \
-            #kyan-cli \
+            kyan-cli \
             kyan-cli-$CURRENT_VERSION \
             kyancore-${CURRENT_VERSION}*.gz*
         ok "${messages["done"]}"
 
         # place it ---------------------------------------------------------------
 
-        mv kyand kyand-$LATEST_VERSION
-        mv kyan-cli kyan-cli-$LATEST_VERSION
+        mv tmp/kyand kyand-$LATEST_VERSION
+        mv tmp/kyan-cli kyan-cli-$LATEST_VERSION
         if [ $PLATFORM != 'armv7l' ];then
-            mv kyan-qt kyan-qt-$LATEST_VERSION
+            mv tmp/kyan-qt kyan-qt-$LATEST_VERSION
         fi
         ln -s kyand-$LATEST_VERSION kyand
         ln -s kyan-cli-$LATEST_VERSION kyan-cli
@@ -590,11 +594,7 @@ update_kyand(){
 
         # purge it ---------------------------------------------------------------
 
-        rm -rf kyan-0.15.0
-        rm -rf kyancore-0.15.1*
-        rm -rf kyancore-0.15.2*
-        rm -rf kyancore-0.15.3*
-        rm -rf $TARDIR
+        rm -rf tmp
 
         # punch it ---------------------------------------------------------------
 
@@ -824,10 +824,10 @@ install_kyand(){
 
     # purge it ---------------------------------------------------------------
 
-    rm -rf kyan-0.15.0
-    rm -rf kyancore-0.15.1*
-    rm -rf kyancore-0.15.2*
-    rm -rf kyancore-0.15.3*
+    rm -rf kyan-0.12.0*
+    rm -rf kyancore-0.12.1*
+    rm -rf kyancore-0.12.2*
+    rm -rf kyancore-0.12.3*
     rm -rf $TARDIR
 
     # preload it -------------------------------------------------------------
