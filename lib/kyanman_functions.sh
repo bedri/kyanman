@@ -731,6 +731,7 @@ install_kyand(){
     pending " --> ${messages["downloading"]} ${DOWNLOAD_URL}... "
     tput sc
     echo -e "$C_CYAN"
+    echo -e "${DOWNLOAD_FILE}"
     $wget_cmd -O - $DOWNLOAD_URL | pv -trep -s28787607 -w80 -N wallet > "${DOWNLOAD_FILE}"
     $wget_cmd -O - https://github.com/kyancoin/KYAN/releases/download/v$LATEST_VERSION/SHA256SUMS.asc | pv -trep -w80 -N checksums > ${DOWNLOAD_FILE}.DIGESTS.txt
     echo -ne "$C_NORM"
