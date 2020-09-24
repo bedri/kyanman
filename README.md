@@ -10,8 +10,18 @@ KYAN wallet/daemon management utilities - version 0.1.28
 
 To install kyanman do:
 
-    sudo apt-get install python git unzip pv
+    sudo apt update && sudo apt upgrade -y
+    sudo apt install python git unzip pv -y
     cd ~ && git clone https://github.com/kyancoin/kyanman
+
+To install kyanman systemwide do:
+    cd ~ && cd kyanman && bash install.sh
+
+To run kyanman do:
+    ~/kyanman/kyanman
+    or if you installed it systemwide just use
+    kyanman
+
 
 To update your existing version 0.15 32/64bit linux kyan wallet to the latest
 kyand, do:

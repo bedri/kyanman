@@ -716,8 +716,8 @@ install_kyand(){
 #        if [ ! -z "$USE_IPV6" ]; then
 #            IPADDR='['$PUBLIC_IPV6']'
 #        fi
-        RPCUSER=`echo $(dd if=/dev/urandom bs=32 count=1 2>/dev/null) | sha256sum | awk '{print $1}'`
-        RPCPASS=`echo $(dd if=/dev/urandom bs=32 count=1 2>/dev/null) | sha256sum | awk '{print $1}'`
+        RPCUSER=`echo $(dd if=/dev/urandom bs=32 count=1 2>&1) | sha256sum | awk '{print $1}'`
+        RPCPASS=`echo $(dd if=/dev/urandom bs=32 count=1 2>&1) | sha256sum | awk '{print $1}'`
         while read; do
             eval echo "$REPLY"
         done < $KYANMAN_GITDIR/.kyan.conf.template > $INSTALL_DIR/kyan.conf
@@ -960,8 +960,8 @@ get_kyand_status(){
     if [ -z "$KYAND_UPTIME_MINS" ]; then KYAND_UPTIME_MINS=0 ; fi
     if [ -z "$KYAND_UPTIME_SECS" ]; then KYAND_UPTIME_SECS=0 ; fi
 
-    KYAND_LISTENING=`netstat -nat | grep LIST | grep 9999 | wc -l`;
-    KYAND_CONNECTIONS=`netstat -nat | grep ESTA | grep 9999 | wc -l`;
+    KYAND_LISTENING=`netstat -nat | grep LIST | grep 7577 | wc -l`;
+    KYAND_CONNECTIONS=`netstat -nat | grep ESTA | grep 7577 | wc -l`;
     KYAND_CURRENT_BLOCK=`$KYAN_CLI getblockcount 2>/dev/null`
     if [ -z "$KYAND_CURRENT_BLOCK" ] ; then KYAND_CURRENT_BLOCK=0 ; fi
     KYAND_GETINFO=`$KYAN_CLI getinfo 2>/dev/null`;
@@ -995,7 +995,7 @@ get_kyand_status(){
 
     WEB_ME=$(echo $WEB_ME | sed -s "s/no forks detected/${messages["no_forks_detected"]}/")
 
-    CHECK_SYNC_AGAINST_HEIGHT=$(echo "$WEB_BLOCK_COUNT_CHAINZ $WEB_BLOCK_COUNT_ME $WEB_BLOCK_COUNT_DQA $WEB_BLOCK_COUNT_DWHALE" | tr " " "\n" | sort -rn | head -1)
+    CHECK_SYNC_AGAINST_HEIGHT=$(echo "$WEB_BLOCK_COUNT_DQA" | tr " " "\n" | sort -rn | head -1)
 
     KYAND_SYNCED=0
     if [ $CHECK_SYNC_AGAINST_HEIGHT -ge $KYAND_CURRENT_BLOCK ] && [ $(($CHECK_SYNC_AGAINST_HEIGHT - 5)) -lt $KYAND_CURRENT_BLOCK ];then
@@ -1013,9 +1013,9 @@ get_kyand_status(){
     get_public_ips
 
     MASTERNODE_BIND_IP=$PUBLIC_IPV4
-    PUBLIC_PORT_CLOSED=$( timeout 2 nc -4 -z $PUBLIC_IPV4 9999 2>&1 >/dev/null; echo $? )
+    PUBLIC_PORT_CLOSED=$( timeout 2 nc -4 -z $PUBLIC_IPV4 7577 2>&1 >/dev/null; echo $? )
 #    if [ $PUBLIC_PORT_CLOSED -ne 0 ] && [ ! -z "$PUBLIC_IPV6" ]; then
-#        PUBLIC_PORT_CLOSED=$( timeout 2 nc -6 -z $PUBLIC_IPV6 9999 2>&1 >/dev/null; echo $? )
+#        PUBLIC_PORT_CLOSED=$( timeout 2 nc -6 -z $PUBLIC_IPV6 7577 2>&1 >/dev/null; echo $? )
 #        if [ $PUBLIC_PORT_CLOSED -eq 0 ]; then
 #            MASTERNODE_BIND_IP=$PUBLIC_IPV6
 #        fi
@@ -1026,7 +1026,7 @@ get_kyand_status(){
     # masternode (remote!) specific
 
     MN_PROTX_RAW="$($KYAN_CLI protx list valid 1 2>&1)"
-    MN_PROTX_RECORD=`echo "$MN_PROTX_RAW" | grep -w -B6 -A19 $MASTERNODE_BIND_IP:9999 | sed -e 's/:9999/~9999/' -e 's/[":,{}]//g' -e 's/^ \+//' -e 's/ \+$//' -e 's/~9999/:9999/' -e '/^$/d' -e '/^[^ ]\+$/d'`
+    MN_PROTX_RECORD=`echo "$MN_PROTX_RAW" | grep -w -B6 -A19 $MASTERNODE_BIND_IP:7577 | sed -e 's/:7577/~7577/' -e 's/[":,{}]//g' -e 's/^ \+//' -e 's/ \+$//' -e 's/~7577/:7577/' -e '/^$/d' -e '/^[^ ]\+$/d'`
     MN_PROTX_QUEUE=`echo "$MN_PROTX_RAW" | egrep '(proTxHash|lastPaidHeight|PoSeRevivedHeight|registeredHeight)' | sed -e 's/[":,{}]//g' -e 's/^ \+//' -e 's/ \+$//' -e '/^$/d' -e '/^[^ ]\+$/d' | sed -e 'N;s/\n/ /' | sed -e 'N;s/\n/ /' | awk ' \
 {
     if ($8 > $6) {
@@ -1138,11 +1138,11 @@ get_kyand_status(){
     fi
 
     if [ $MN_CONF_ENABLED -gt 0 ] ; then
-        WEB_NINJA_API=$($curl_cmd "https://www.kyanninja.pl/api/masternodes?ips=\[\"${MASTERNODE_BIND_IP}:9999\"\]&portcheck=1&balance=1")
+        WEB_NINJA_API=$($curl_cmd "https://www.kyanninja.pl/api/masternodes?ips=\[\"${MASTERNODE_BIND_IP}:7577\"\]&portcheck=1&balance=1")
         if [ -z "$WEB_NINJA_API" ]; then
             sleep 2
             # downgrade connection to support distros with stale nss libraries
-            WEB_NINJA_API=$($curl_cmd --ciphers rsa_3des_sha "https://www.kyanninja.pl/api/masternodes?ips=\[\"${MASTERNODE_BIND_IP}:9999\"\]&portcheck=1&balance=1")
+            WEB_NINJA_API=$($curl_cmd --ciphers rsa_3des_sha "https://www.kyanninja.pl/api/masternodes?ips=\[\"${MASTERNODE_BIND_IP}:7577\"\]&portcheck=1&balance=1")
         fi
 
         WEB_NINJA_JSON_TEXT=$(echo $WEB_NINJA_API | python -m json.tool)
