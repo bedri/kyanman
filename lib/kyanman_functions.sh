@@ -365,7 +365,7 @@ _get_versions() {
 
 
     local IFS=' '
-    DOWNLOAD_FOR='linux'
+    DOWNLOAD_FOR='Linux'
     if [ ! -z "$BIGARM" ]; then
         DOWNLOAD_FOR='RPi2'
     fi
