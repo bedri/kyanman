@@ -504,6 +504,7 @@ update_kyand(){
 
         # pull it ----------------------------------------------------------------
 
+	echo -r ${DOWNLOAD_URL}
         pending " --> ${messages["downloading"]} ${DOWNLOAD_URL}... "
         wget --no-check-certificate -q -r $DOWNLOAD_URL -O $DOWNLOAD_FILE
         wget --no-check-certificate -q -r https://github.com/kyancoin/KYAN/releases/download/v$LATEST_VERSION/SHA256SUMS.asc -O ${DOWNLOAD_FILE}.DIGESTS.txt
