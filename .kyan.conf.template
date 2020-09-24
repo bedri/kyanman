@@ -8,9 +8,8 @@ rpcport=17577
 listen=1
 server=1
 daemon=1
-logtimestamps=1
-maxconnections=64
-"externalip=${IPADDR}"
 "#----"
-"#masternode=1"
-"#masternodeprivkey=<replace_with_mnprivkey>"
+"externalip=${IPADDR}"
+"#masternodeblsprivkey="
+"#----"
+
