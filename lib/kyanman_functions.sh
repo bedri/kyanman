@@ -385,9 +385,10 @@ _get_versions() {
 
     if [ -z "$KYAN_CLI" ]; then KYAN_CLI='echo'; fi
     CURRENT_VERSION=$( $KYAN_CLI --version | perl -ne '/v([0-9.]+)/; print $1;' 2>/dev/null ) 2>/dev/null
+    CURRENT_VERSION=$CURRENT_VERSION.k
     for url in "${DOWNLOAD_URLS[@]}"
     do
-        if [[ $url =~ .*${PLAT}-linux.* ]] ; then
+        if [[ $url =~ .*Linux.* ]] ; then
             DOWNLOAD_URL=$url
             DOWNLOAD_FILE=${DOWNLOAD_URL##*/}
         fi
@@ -570,10 +571,10 @@ update_kyand(){
 
         # place it ---------------------------------------------------------------
 
-        mv $TARDIR/bin/kyand kyand-$LATEST_VERSION
-        mv $TARDIR/bin/kyan-cli kyan-cli-$LATEST_VERSION
+        mv kyand kyand-$LATEST_VERSION
+        mv kyan-cli kyan-cli-$LATEST_VERSION
         if [ $PLATFORM != 'armv7l' ];then
-            mv $TARDIR/bin/kyan-qt kyan-qt-$LATEST_VERSION
+            mv kyan-qt kyan-qt-$LATEST_VERSION
         fi
         ln -s kyand-$LATEST_VERSION kyand
         ln -s kyan-cli-$LATEST_VERSION kyan-cli
@@ -732,7 +733,7 @@ install_kyand(){
     pending " --> ${messages["downloading"]} ${DOWNLOAD_URL}... "
     tput sc
     echo -e "$C_CYAN"
-    echo -e "${DOWNLOAD_FILE}"
+    echo -e "DOWNLOAD FILE: ${DOWNLOAD_FILE}"
     $wget_cmd -O - $DOWNLOAD_URL | pv -trep -s28787607 -w80 -N wallet > "${DOWNLOAD_FILE}"
     $wget_cmd -O - https://github.com/kyancoin/KYAN/releases/download/v$LATEST_VERSION/SHA256SUMS.asc | pv -trep -w80 -N checksums > ${DOWNLOAD_FILE}.DIGESTS.txt
     echo -ne "$C_NORM"
@@ -804,10 +805,10 @@ install_kyand(){
 
     # place it ---------------------------------------------------------------
 
-    mv $TARDIR/bin/kyand kyand-$LATEST_VERSION
-    mv $TARDIR/bin/kyan-cli kyan-cli-$LATEST_VERSION
+    mv kyand kyand-$LATEST_VERSION
+    mv kyan-cli kyan-cli-$LATEST_VERSION
     if [ $PLATFORM != 'armv7l' ];then
-        mv $TARDIR/bin/kyan-qt kyan-qt-$LATEST_VERSION
+        mv kyan-qt kyan-qt-$LATEST_VERSION
     fi
     ln -s kyand-$LATEST_VERSION kyand
     ln -s kyan-cli-$LATEST_VERSION kyan-cli
@@ -831,45 +832,45 @@ install_kyand(){
 
     # preload it -------------------------------------------------------------
 
-    pending " --> ${messages["bootstrapping"]} blockchain. ${messages["please_wait"]}\n"
-    pending "  --> ${messages["downloading"]} bootstrap... "
-    BOOSTRAP_LINKS='https://raw.githubusercontent.com/UdjinM6/kyan-bootstrap/master/links-mainnet.md'
-    wget --no-check-certificate -q $BOOSTRAP_LINKS -O - | grep 'bootstrap\.dat\.zip' | grep 'sha256\.txt' > links.md
-    MAINNET_BOOTSTRAP_FILE_1=$(head -1 links.md | awk '{print $9}' | sed 's/.*\(http.*\.zip\).*/\1/')
-    MAINNET_BOOTSTRAP_FILE_1_SIZE=$(head -1 links.md | awk '{print $10}' | sed 's/[()]//g')
-    MAINNET_BOOTSTRAP_FILE_1_SIZE_M=$(( $(echo $MAINNET_BOOTSTRAP_FILE_1_SIZE | sed -e 's/[^0-9]//g') * 100 ))
-    MAINNET_BOOTSTRAP_FILE_2=$(head -3 links.md | tail -1 | awk '{print $9}' | sed 's/.*\(http.*\.zip\).*/\1/')
-    pending " $MAINNET_BOOTSTRAP_FILE_1_SIZE... "
-    tput sc
-    echo -e "$C_CYAN"
-    $wget_cmd -O - $MAINNET_BOOTSTRAP_FILE_1 | pv -trepa -s${MAINNET_BOOTSTRAP_FILE_1_SIZE_M}m -w80 -N bootstrap > ${MAINNET_BOOTSTRAP_FILE_1##*/}
-    MAINNET_BOOTSTRAP_FILE=${MAINNET_BOOTSTRAP_FILE_1##*/}
-    if [ ! -s $MAINNET_BOOTSTRAP_FILE ]; then
-        rm $MAINNET_BOOTSTRAP_FILE
-        $wget_cmd -O - $MAINNET_BOOTSTRAP_FILE_2 | pv -trepa -s${MAINNET_BOOTSTRAP_FILE_1_SIZE_M}m -w80 -N bootstrap > ${MAINNET_BOOTSTRAP_FILE_2##*/}
-        MAINNET_BOOTSTRAP_FILE=${MAINNET_BOOTSTRAP_FILE_2##*/}
-    fi
-    echo -ne "$C_NORM"
-    clear_n_lines 1
-    tput rc
-    tput cuu 2
-    if [ ! -s $MAINNET_BOOTSTRAP_FILE ]; then
-        # TODO i18n
-        err " bootstrap download failed. skipping."
-    else
-        ok "${messages["done"]}"
-        pending "  --> ${messages["unzipping"]} bootstrap... "
-        tput sc
-        echo -e "$C_CYAN"
-        BOOTSTRAP_SIZE_M=$(( $(unzip -l ${MAINNET_BOOTSTRAP_FILE##*/} | grep -v zip | grep bootstrap.dat | awk '{print $1}') / 1024 / 1024 ))
-        unzip -qp ${MAINNET_BOOTSTRAP_FILE##*/} | pv -trep -s${BOOTSTRAP_SIZE_M}m -w80 -N 'unpacking bootstrap' > bootstrap.dat
-        echo -ne "$C_NORM"
-        clear_n_lines 1
-        tput rc
-        tput cuu 2
-        ok "${messages["done"]}"
-        rm -f links.md bootstrap.dat*.zip
-    fi
+    #pending " --> ${messages["bootstrapping"]} blockchain. ${messages["please_wait"]}\n"
+    #pending "  --> ${messages["downloading"]} bootstrap... "
+    #BOOSTRAP_LINKS='https://raw.githubusercontent.com/UdjinM6/kyan-bootstrap/master/links-mainnet.md'
+    #wget --no-check-certificate -q $BOOSTRAP_LINKS -O - | grep 'bootstrap\.dat\.zip' | grep 'sha256\.txt' > links.md
+    #MAINNET_BOOTSTRAP_FILE_1=$(head -1 links.md | awk '{print $9}' | sed 's/.*\(http.*\.zip\).*/\1/')
+    #MAINNET_BOOTSTRAP_FILE_1_SIZE=$(head -1 links.md | awk '{print $10}' | sed 's/[()]//g')
+    #MAINNET_BOOTSTRAP_FILE_1_SIZE_M=$(( $(echo $MAINNET_BOOTSTRAP_FILE_1_SIZE | sed -e 's/[^0-9]//g') * 100 ))
+    #MAINNET_BOOTSTRAP_FILE_2=$(head -3 links.md | tail -1 | awk '{print $9}' | sed 's/.*\(http.*\.zip\).*/\1/')
+    #pending " $MAINNET_BOOTSTRAP_FILE_1_SIZE... "
+    #tput sc
+    #echo -e "$C_CYAN"
+    #$wget_cmd -O - $MAINNET_BOOTSTRAP_FILE_1 | pv -trepa -s${MAINNET_BOOTSTRAP_FILE_1_SIZE_M}m -w80 -N bootstrap > ${MAINNET_BOOTSTRAP_FILE_1##*/}
+    #MAINNET_BOOTSTRAP_FILE=${MAINNET_BOOTSTRAP_FILE_1##*/}
+    #if [ ! -s $MAINNET_BOOTSTRAP_FILE ]; then
+    #    rm $MAINNET_BOOTSTRAP_FILE
+    #    $wget_cmd -O - $MAINNET_BOOTSTRAP_FILE_2 | pv -trepa -s${MAINNET_BOOTSTRAP_FILE_1_SIZE_M}m -w80 -N bootstrap > ${MAINNET_BOOTSTRAP_FILE_2##*/}
+    #    MAINNET_BOOTSTRAP_FILE=${MAINNET_BOOTSTRAP_FILE_2##*/}
+    #fi
+    #echo -ne "$C_NORM"
+    #clear_n_lines 1
+    #tput rc
+    #tput cuu 2
+    #if [ ! -s $MAINNET_BOOTSTRAP_FILE ]; then
+    #    # TODO i18n
+    #    err " bootstrap download failed. skipping."
+    #else
+    #    ok "${messages["done"]}"
+    #    pending "  --> ${messages["unzipping"]} bootstrap... "
+    #    tput sc
+    #    echo -e "$C_CYAN"
+    #    BOOTSTRAP_SIZE_M=$(( $(unzip -l ${MAINNET_BOOTSTRAP_FILE##*/} | grep -v zip | grep bootstrap.dat | awk '{print $1}') / 1024 / 1024 ))
+    #    unzip -qp ${MAINNET_BOOTSTRAP_FILE##*/} | pv -trep -s${BOOTSTRAP_SIZE_M}m -w80 -N 'unpacking bootstrap' > bootstrap.dat
+    #    echo -ne "$C_NORM"
+    #    clear_n_lines 1
+    #    tput rc
+    #    tput cuu 2
+    #    ok "${messages["done"]}"
+    #    rm -f links.md bootstrap.dat*.zip
+    #fi
 
     # punch it ---------------------------------------------------------------
 
