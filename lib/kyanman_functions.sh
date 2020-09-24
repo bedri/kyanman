@@ -109,7 +109,7 @@ usage(){
 
 
 
-    ${messages["usage"]}: ${0##*/} [command]
+    ${messages["usage"]}: ./${0##*/} [command]
 
         ${messages["usage_title"]}
 
