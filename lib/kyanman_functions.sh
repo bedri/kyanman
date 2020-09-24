@@ -530,7 +530,7 @@ update_kyand(){
         # produce it -------------------------------------------------------------
 
         pending " --> ${messages["unpacking"]} ${DOWNLOAD_FILE}... " && \
-        tar zxf $DOWNLOAD_FILE && \
+        unzip $DOWNLOAD_FILE && \
         ok "${messages["done"]}"
 
         # pummel it --------------------------------------------------------------
@@ -766,7 +766,7 @@ install_kyand(){
     # produce it -------------------------------------------------------------
 
     pending " --> ${messages["unpacking"]} ${DOWNLOAD_FILE}... " && \
-    tar zxf $DOWNLOAD_FILE && \
+    unzip $DOWNLOAD_FILE && \
     ok "${messages["done"]}"
 
     # pummel it --------------------------------------------------------------
