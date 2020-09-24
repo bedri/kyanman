@@ -972,7 +972,7 @@ get_kyand_status(){
         WEB_BLOCK_COUNT_CHAINZ=0
     fi
 
-    WEB_BLOCK_COUNT_DQA=`$curl_cmd https://explorer.kyan.org/chain/Kyan/q/getblockcount`;
+    WEB_BLOCK_COUNT_DQA=`$curl_cmd https://explorer.kyancoin.net/api/getblockcount`;
     if [ -z "$WEB_BLOCK_COUNT_DQA" ]; then
         WEB_BLOCK_COUNT_DQA=0
     fi
@@ -1224,10 +1224,10 @@ print_status() {
     pending "${messages["status_dconcnt"]}" ; [ $KYAND_CONNECTIONS   -gt 0 ] && ok "$KYAND_CONNECTIONS" || err "$KYAND_CONNECTIONS"
     pending "${messages["status_dblsync"]}" ; [ $KYAND_SYNCED     -gt 0 ] && ok "${messages["YES"]}" || err "${messages["NO"]}"
     pending "${messages["status_dbllast"]}" ; [ $KYAND_SYNCED     -gt 0 ] && ok "$KYAND_CURRENT_BLOCK" || err "$KYAND_CURRENT_BLOCK"
-    pending "${messages["status_webchai"]}" ; [ $WEB_BLOCK_COUNT_CHAINZ -gt 0 ] && ok "$WEB_BLOCK_COUNT_CHAINZ" || err "$WEB_BLOCK_COUNT_CHAINZ"
+    #pending "${messages["status_webchai"]}" ; [ $WEB_BLOCK_COUNT_CHAINZ -gt 0 ] && ok "$WEB_BLOCK_COUNT_CHAINZ" || err "$WEB_BLOCK_COUNT_CHAINZ"
     pending "${messages["status_webdark"]}" ; [ $WEB_BLOCK_COUNT_DQA    -gt 0 ] && ok "$WEB_BLOCK_COUNT_DQA" || err "$WEB_BLOCK_COUNT_DQA"
-    pending "${messages["status_webkyan"]}" ; [ $WEB_BLOCK_COUNT_DWHALE -gt 0 ] && ok "$WEB_BLOCK_COUNT_DWHALE" || err "$WEB_BLOCK_COUNT_DWHALE"
-    pending "${messages["status_webmast"]}" ; [ $WEB_ME_FORK_DETECT -gt 0 ] && err "$WEB_ME" || ok "$WEB_ME"
+    #pending "${messages["status_webkyan"]}" ; [ $WEB_BLOCK_COUNT_DWHALE -gt 0 ] && ok "$WEB_BLOCK_COUNT_DWHALE" || err "$WEB_BLOCK_COUNT_DWHALE"
+    #pending "${messages["status_webmast"]}" ; [ $WEB_ME_FORK_DETECT -gt 0 ] && err "$WEB_ME" || ok "$WEB_ME"
     pending "${messages["status_dcurdif"]}" ; ok "$KYAND_DIFFICULTY"
     if [ $KYAND_RUNNING -gt 0 ] && [ $MN_CONF_ENABLED -gt 0 ] ; then
     #pending "${messages["status_mnstart"]}" ; [ $MN_STARTED -gt 0  ] && ok "${messages["YES"]}" || err "${messages["NO"]}"
