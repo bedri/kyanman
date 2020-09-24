@@ -8,6 +8,10 @@ KYAN wallet/daemon management utilities - version 0.1.28
 
 # Install/Usage
 
+**Before installation**
+* Be sure than Kyanite is not installed on the system. If there is a .kyancore data directory, first backup your wallet.dat or the data directory completely and then completely remove .kyancore directory. Otherwise kyanman will throw an error.
+* Be sure that kyand or kyan-qt is not running before you run "kyanman install". Otherwise kyanman will throw an error.
+
 To install kyanman do:
 
     sudo apt update && sudo apt upgrade -y
