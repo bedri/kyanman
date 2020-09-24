@@ -27,7 +27,7 @@ KYAN wallet/daemon management utilities - version 0.1.28
     ~/kyanman/kyanman
 
 
-	*or if you installed it systemwide just use*
+*or if you installed it systemwide just use*
     
 
 	kyanman
