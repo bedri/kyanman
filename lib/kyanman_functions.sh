@@ -212,7 +212,7 @@ _check_dependencies() {
     MN_CONF_ENABLED=$( egrep -s '^[^#]*\s*masternode\s*=\s*1' $HOME/.kyan{,core}/kyan.conf | wc -l 2>/dev/null)
     if [ $MN_CONF_ENABLED -gt 0 ] ; then
         (which unzip 2>&1) >/dev/null || MISSING_DEPENDENCIES="${MISSING_DEPENDENCIES}unzip "
-        (which virtualenv 2>&1) >/dev/null || MISSING_DEPENDENCIES="${MISSING_DEPENDENCIES}python-virtualenv "
+        (which virtualenv 2>&1) >/dev/null || MISSING_DEPENDENCIES="${MISSING_DEPENDENCIES}virtualenv "
     fi
 
     if [ "$1" == "install" ]; then
@@ -222,7 +222,7 @@ _check_dependencies() {
 
         # only require python-virtualenv for sentinel
         if [ "$2" == "sentinel" ]; then
-            (which virtualenv 2>&1) >/dev/null || MISSING_DEPENDENCIES="${MISSING_DEPENDENCIES}python-virtualenv "
+            (which virtualenv 2>&1) >/dev/null || MISSING_DEPENDENCIES="${MISSING_DEPENDENCIES}virtualenv "
         fi
     fi
 
@@ -634,7 +634,7 @@ update_kyand(){
             # patch it -----------------------------------------------------------
 
             pending "  --> updating crontab... "
-            (crontab -l 2>/dev/null | grep -v sentinel.py ; echo "* * * * * cd $INSTALL_DIR/sentinel && venv/bin/python bin/sentinel.py  2>&1 >> sentinel-cron.log") | crontab -
+            (crontab -l 2>/dev/null | grep -v sentinel.py ; echo "* * * * * cd $INSTALL_DIR/kyan-sentinel && venv/bin/python bin/sentinel.py  2>&1 >> sentinel-cron.log") | crontab -
             ok "${messages["done"]}"
 
         fi
@@ -1117,7 +1117,7 @@ get_kyand_status(){
     fi
 
     # sentinel checks
-    if [ -e $INSTALL_DIR/sentinel ]; then
+    if [ -e $INSTALL_DIR/kyan-sentinel ]; then
 
         SENTINEL_INSTALLED=0
         SENTINEL_PYTEST=0
@@ -1125,7 +1125,7 @@ get_kyand_status(){
         SENTINEL_LAUNCH_OUTPUT=""
         SENTINEL_LAUNCH_OK=-1
 
-        cd $INSTALL_DIR/sentinel
+        cd $INSTALL_DIR/kyan-sentinel
         SENTINEL_INSTALLED=$( ls -l bin/sentinel.py | wc -l )
         SENTINEL_PYTEST=$( venv/bin/py.test test 2>&1 > /dev/null ; echo $? )
         SENTINEL_CRONTAB=$( crontab -l | grep sentinel | grep -v '^#' | wc -l )
@@ -1350,7 +1350,7 @@ install_sentinel() {
     pending "  --> installing dependencies... "
     echo
 
-    cd sentinel
+    cd kyan-sentinel
 
     pending "   --> virtualenv init... "
     virtualenv venv 2>&1 > /dev/null;
@@ -1383,7 +1383,7 @@ install_sentinel() {
     ok "${messages["done"]}"
 
     pending "  --> installing crontab... "
-    (crontab -l 2>/dev/null | grep -v sentinel.py ; echo "* * * * * cd $INSTALL_DIR/sentinel && venv/bin/python bin/sentinel.py  2>&1 >> sentinel-cron.log") | crontab -
+    (crontab -l 2>/dev/null | grep -v sentinel.py ; echo "* * * * * cd $INSTALL_DIR/kyan-sentinel && venv/bin/python bin/sentinel.py  2>&1 >> sentinel-cron.log") | crontab -
     ok "${messages["done"]}"
 
     cd ..
