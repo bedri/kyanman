@@ -19,12 +19,16 @@ KYAN wallet/daemon management utilities - version 0.1.28
     cd ~ && git clone https://github.com/kyancoin/kyanman
 
 **To install kyanman systemwide do:**
+
     cd ~ && cd kyanman && bash install.sh
 
 **To run kyanman do:**
+
     ~/kyanman/kyanman
-    or if you installed it systemwide just use
-    kyanman
+
+	*or if you installed it systemwide just use*
+    
+	kyanman
 
 
 **To update your existing version 0.15 32/64bit linux kyan wallet to the latest kyand, do:**
