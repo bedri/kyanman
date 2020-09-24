@@ -560,11 +560,11 @@ update_kyand(){
             netfulfilled.dat \
             peers.dat \
             sporks.dat \
-            kyand \
+            #kyand \
             kyand-$CURRENT_VERSION \
-            kyan-qt \
+            #kyan-qt \
             kyan-qt-$CURRENT_VERSION \
-            kyan-cli \
+            #kyan-cli \
             kyan-cli-$CURRENT_VERSION \
             kyancore-${CURRENT_VERSION}*.gz*
         ok "${messages["done"]}"
@@ -590,10 +590,10 @@ update_kyand(){
 
         # purge it ---------------------------------------------------------------
 
-        rm -rf kyan-0.12.0
-        rm -rf kyancore-0.12.1*
-        rm -rf kyancore-0.12.2*
-        rm -rf kyancore-0.12.3*
+        rm -rf kyan-0.15.0
+        rm -rf kyancore-0.15.1*
+        rm -rf kyancore-0.15.2*
+        rm -rf kyancore-0.15.3*
         rm -rf $TARDIR
 
         # punch it ---------------------------------------------------------------
@@ -824,10 +824,10 @@ install_kyand(){
 
     # purge it ---------------------------------------------------------------
 
-    rm -rf kyan-0.12.0
-    rm -rf kyancore-0.12.1*
-    rm -rf kyancore-0.12.2*
-    rm -rf kyancore-0.12.3*
+    rm -rf kyan-0.15.0
+    rm -rf kyancore-0.15.1*
+    rm -rf kyancore-0.15.2*
+    rm -rf kyancore-0.15.3*
     rm -rf $TARDIR
 
     # preload it -------------------------------------------------------------
