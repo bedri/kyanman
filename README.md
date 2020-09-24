@@ -12,43 +12,42 @@ KYAN wallet/daemon management utilities - version 0.1.28
 * Be sure than Kyanite is not installed on the system. If there is a .kyancore data directory, first backup your wallet.dat or the data directory completely and then completely remove .kyancore directory. Otherwise kyanman will throw an error.
 * Be sure that kyand or kyan-qt is not running before you run "kyanman install". Otherwise kyanman will throw an error.
 
-To install kyanman do:
+**To install kyanman do:**
 
     sudo apt update && sudo apt upgrade -y
     sudo apt install python git unzip pv -y
     cd ~ && git clone https://github.com/kyancoin/kyanman
 
-To install kyanman systemwide do:
+**To install kyanman systemwide do:**
     cd ~ && cd kyanman && bash install.sh
 
-To run kyanman do:
+**To run kyanman do:**
     ~/kyanman/kyanman
     or if you installed it systemwide just use
     kyanman
 
 
-To update your existing version 0.15 32/64bit linux kyan wallet to the latest
-kyand, do:
+**To update your existing version 0.15 32/64bit linux kyan wallet to the latest kyand, do:**
 
     kyanman/kyanman update
 
-To perform a new install of kyan, do:
+**To perform a new install of kyan, do:**
 
     kyanman/kyanman install
 
-To overwrite an existing kyan install, do:
+**To overwrite an existing kyan install, do:**
 
     kyanman/kyanman reinstall
 
-To update kyanman to the latest version, do:
+**To update kyanman to the latest version, do:**
 
     kyanman/kyanman sync
 
-To restart (or start) kyand, do:
+**To restart (or start) kyand, do:**
 
     kyanman/kyanman restart
 
-To get the current status of kyand, do:
+**To get the current status of kyand, do:**
 
     kyanman/kyanman status
 
