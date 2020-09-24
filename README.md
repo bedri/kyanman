@@ -13,7 +13,7 @@ To install kyanman do:
     sudo apt-get install python git unzip pv
     cd ~ && git clone https://github.com/kyancoin/kyanman
 
-To update your existing version 12 32/64bit linux kyan wallet to the latest
+To update your existing version 0.15 32/64bit linux kyan wallet to the latest
 kyand, do:
 
     kyanman/kyanman update
@@ -86,30 +86,27 @@ given the optional 'now' argument.
 * pv
 * python
 * unzip
-* kyand, kyan-cli - version 12 or greater to update
+* kyand, kyan-cli - version 0.15 or greater to update
 
 # Screencaps
 
 ### install
 
-<img src="https://raw.githubusercontent.com/moocowmoo/kyanman/master/screencaps/kyanman_0.1-install.png">
+<img src="https://raw.githubusercontent.com/kyancoin/kyanman/master/screencaps/kyanman_0.1-install.png">
 
 ### update
 
-<img src="https://raw.githubusercontent.com/moocowmoo/kyanman/master/screencaps/kyanman_0.1-update.png">
+<img src="https://raw.githubusercontent.com/kyancoin/kyanman/master/screencaps/kyanman_0.1-update.png">
 
 ### reinstall
 
-<img src="https://raw.githubusercontent.com/moocowmoo/kyanman/master/screencaps/kyanman_0.1-reinstall.png">
+<img src="https://raw.githubusercontent.com/kyancoin/kyanman/master/screencaps/kyanman_0.1-reinstall.png">
 
 ### restart
 
-<img src="https://raw.githubusercontent.com/moocowmoo/kyanman/master/screencaps/kyanman_0.1-restart.png">
+<img src="https://raw.githubusercontent.com/kyancoin/kyanman/master/screencaps/kyanman_0.1-restart.png">
 
 ### status
 
-<img src="https://raw.githubusercontent.com/moocowmoo/kyanman/master/screencaps/kyanman_0.1-status.png">
+<img src="https://raw.githubusercontent.com/kyancoin/kyanman/master/screencaps/kyanman_0.1-status.png">
 
-# Contact
-
-Email me at moocowmoo@masternode.me or submit a pull request.
